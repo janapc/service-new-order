@@ -1,0 +1,21 @@
+{
+  "name": "common-kafka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^2.1.0",
+    "pino": "^8.1.0",
+    "pino-pretty": "^8.1.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "@types/uuid": "^8.3.4",
+    "typescript": "^4.7.4"
+  }
+}
