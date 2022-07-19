@@ -13,7 +13,19 @@
 
 ## 💎 Project
 
-These services process a new order. How in an e-commerce when a new order has to be processed. We need logs, submit an email, and verify if not have fraud.All this using the apache-Kafka to orchestrator.
+These services process a new order. How in an e-commerce when a new order has to be processed. We need make several process to
+that this order reaches the client.All this using the apache-Kafka to orchestrator the messages.
+
+Some of services using:
+
+| Service                | Description                                       | Consumer X Producer |
+| ---------------------- | ------------------------------------------------- | ------------------- |
+| service-email          | This microservice send a e-mail                   | true X false        |
+| service-fraud-detector | This microservice verify if the order is an fraud | true X true         |
+| service-http-ecommerce | This microservice create new order by API         | false X true        |
+| service-log            | This microservice manager all logs of services    | true X false        |
+| service-new-order      | This microservice simule new orders               | false X true        |
+| service-users          | This microservice create new users in database    | true X false        |
 
 ## 📜 Requirement
 
@@ -39,6 +51,12 @@ To run this project your need to have:
 
 ## run service of log
 ❯ npm run service:log
+
+## run service of api
+❯ npm run service:http-ecommerce
+
+## run service of users
+❯ npm run service:users
 
 ## run new order
 ❯ npm run service:new-order

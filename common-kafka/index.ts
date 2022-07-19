@@ -9,65 +9,42 @@ import { v4 as uuidv4 } from "uuid";
 
 import { logCreator } from "./utils/logger";
 
-interface MessageInterface {
-  topic: string;
-  partition: number;
+const KAFKA_BROKERS = ["127.0.0.1:9092", "127.0.0.1:9093", "127.0.0.1:9094"];
+
+abstract class CommonKafka {
   clientName: string;
-  message: {
-    offset: string;
-    key: Buffer | null;
-    value: Buffer | null;
-    timestamp: string;
-  };
-}
-
-interface LogMessageInterface {
-  message: string;
-  extra: {
-    partition: number;
-    offset: string;
-  };
-}
-
-export interface MessagePayloadInterface extends EachMessagePayload {}
-export interface TopicMessagesInterface extends TopicMessages {}
-
-export abstract class CommonKafka {
-  clientName: string;
+  private kafka: Kafka;
 
   constructor(clientName: string) {
     this.clientName = clientName;
+    this.kafka = new Kafka({
+      brokers: KAFKA_BROKERS,
+      clientId: `${this.clientName}-${uuidv4()}`,
+      logCreator,
+    });
   }
 
   createConsumer(groupId: string): Consumer {
-    const kafka = new Kafka({
-      brokers: ["127.0.0.1:9092"],
-      clientId: `${this.clientName}-${uuidv4()}`,
-      logCreator,
-    });
-
-    return kafka.consumer({ groupId });
+    return this.kafka.consumer({ groupId });
   }
 
   createProducer(): Producer {
-    const kafka = new Kafka({
-      brokers: ["127.0.0.1:9092"],
-      clientId: `${this.clientName}-${uuidv4()}`,
-      logCreator,
-    });
-
-    return kafka.producer();
+    return this.kafka.producer();
   }
 
-  logMessage(params: MessageInterface): LogMessageInterface {
-    return {
-      message: `(${params.topic}|${params.clientName}|${
-        params.message.timestamp
-      }) : ${params.message.key?.toString()} - ${params.message.value?.toString()}`,
+  logMessage(params: EachMessagePayload) {
+    const data = {
+      message: `(${params.topic}|${this.clientName}|${params.message.timestamp})`,
       extra: {
         partition: params.partition,
+        key: params.message.key?.toString(),
+        value: params.message.value?.toString(),
         offset: params.message.offset,
       },
     };
+
+    this.kafka.logger().info(data.message, data.extra);
   }
 }
+
+export { Consumer, EachMessagePayload, TopicMessages, CommonKafka };

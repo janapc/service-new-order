@@ -1,13 +1,15 @@
 {
   "name": "service-new-order",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "These services process a new order",
   "main": "index.ts",
   "scripts": {
     "service:fraudDetector": "cd service-fraud-detector && npm run start",
     "service:email": "cd service-email && npm run start",
     "service:log": "cd service-log && npm run start",
-    "service:newOrder": "cd service-new-order && npm run start"
+    "service:newOrder": "cd service-new-order && npm run start",
+    "service:users": "cd service-users && npm run start",
+    "service:http-ecommerce": "cd service-http-ecommerce && npm run start"
   },
   "keywords": [],
   "author": "janaina",

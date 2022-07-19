@@ -1,7 +1,7 @@
 {
-  "name": "service-fraud-detector",
+  "name": "service-http-ecommerce",
   "version": "1.0.0",
-  "description": "This microservice verify if is an fraud",
+  "description": "This microservice create new orders",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only index.ts"
@@ -10,11 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "2.0.0"
+    "common-kafka": "2.0.0",
+    "express": "^4.18.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/node": "^18.0.3",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "@types/uuid": "^8.3.4"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "common-kafka",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "This project contain the handler of the Kafka",
   "main": "index.ts",
   "scripts": {},
   "keywords": [],
