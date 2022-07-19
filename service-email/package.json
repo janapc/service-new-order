@@ -1,7 +1,7 @@
 {
   "name": "service-email",
   "version": "1.0.0",
-  "description": "",
+  "description": "This microservice send a e-mail",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only index.ts"
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "1.0.0"
+    "common-kafka": "2.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

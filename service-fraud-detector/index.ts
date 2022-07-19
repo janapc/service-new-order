@@ -1,14 +1,23 @@
-import { CommonKafka, MessagePayloadInterface } from "common-kafka";
+import { CommonKafka, EachMessagePayload } from "common-kafka";
+
+type Order = {
+  orderId: string;
+  email: string;
+  amount: number;
+};
 
 class FraudDetectorService extends CommonKafka {
   constructor() {
     super("FraudDetectorService");
   }
 
-  async main(): Promise<void> {
+  async main() {
     const consumer = this.createConsumer(this.clientName);
+    const producer = this.createProducer();
 
     try {
+      await producer.connect();
+
       await consumer.connect();
       await consumer.subscribe({
         topic: "ECOMMERCE_NEW_ORDER",
@@ -16,17 +25,31 @@ class FraudDetectorService extends CommonKafka {
 
       await consumer.run({
         autoCommitThreshold: 1,
-        eachMessage: async (messagePayload: MessagePayloadInterface) => {
-          const data = this.logMessage({
-            ...messagePayload,
-            clientName: this.clientName,
+        eachMessage: async (messagePayload: EachMessagePayload) => {
+          const { topic, message, partition } = messagePayload;
+
+          const order: Order =
+            message.value && JSON.parse(message.value.toString());
+
+          const topicName = this.#isFraud(order.amount)
+            ? "ECOMMERCE_ORDER_REJECTED"
+            : "ECOMMERCE_ORDER_APPROVED";
+          await producer.send({
+            topic: topicName,
+            messages: [{ key: order.email, value: order?.toString() || "" }],
           });
-          consumer.logger().info(data.message, data.extra);
         },
       });
     } catch (error) {
       consumer.logger().error(String(error));
+
+      await producer.disconnect();
+      await consumer.disconnect();
     }
+  }
+
+  #isFraud(amount: Number): boolean {
+    return amount >= 4500;
   }
 }
 

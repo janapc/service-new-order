@@ -1,8 +1,8 @@
 {
-  "name": "service-fraud-detector",
+  "name": "service-users",
   "version": "1.0.0",
-  "description": "This microservice verify if is an fraud",
-  "main": "index.ts",
+  "description": "This microservice create new users",
+  "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only index.ts"
   },
@@ -10,10 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "2.0.0"
+    "common-kafka": "2.0.0",
+    "sqlite": "^4.1.1",
+    "sqlite3": "^5.0.8",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
+    "@types/sqlite3": "^3.1.8",
+    "@types/uuid": "^8.3.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   }

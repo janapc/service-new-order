@@ -1,44 +1,51 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { CommonKafka, TopicMessagesInterface } from "common-kafka";
+import { CommonKafka, TopicMessages } from "common-kafka";
+
+type Order = {
+  orderId: string;
+  email: string;
+  amount: number;
+};
 
 class NewOrderProducer extends CommonKafka {
   constructor() {
     super("NewOrderProducer");
   }
 
-  async main(): Promise<void> {
+  async main() {
     const producer = this.createProducer();
-    try {
-      producer.logger().info(this.clientName);
 
+    try {
       await producer.connect();
 
-      const emailBody =
-        "Thank you for your order! We are processing your order!";
-      const userId = uuidv4();
-      const order = {
-        userId,
-        orderId: uuidv4(),
-        amount: Number(Math.random() * 5000 + 1),
-      };
+      const email = `${Math.random()}@email.com`;
 
-      const topicMessages: Array<TopicMessagesInterface> = [
-        {
-          topic: "ECOMMERCE_SEND_EMAIL",
-          messages: [{ key: userId, value: emailBody }],
-        },
-        {
-          topic: "ECOMMERCE_NEW_ORDER",
-          messages: [{ key: userId, value: JSON.stringify(order) }],
-        },
-      ];
+      for (let count = 0; count < 10; count++) {
+        const emailBody =
+          "Thank you for your order! We are processing your order!";
+        const order: Order = {
+          orderId: uuidv4(),
+          amount: Number(Math.random() * 5000 + 1),
+          email,
+        };
 
-      await producer.sendBatch({ topicMessages });
+        const topicMessages: Array<TopicMessages> = [
+          {
+            topic: "ECOMMERCE_SEND_EMAIL",
+            messages: [{ key: email, value: emailBody }],
+          },
+          {
+            topic: "ECOMMERCE_NEW_ORDER",
+            messages: [{ key: email, value: JSON.stringify(order) }],
+          },
+        ];
 
-      await producer.disconnect();
+        await producer.sendBatch({ topicMessages });
+      }
     } catch (error) {
       producer.logger().error(String(error));
+      producer.disconnect();
     }
   }
 }
