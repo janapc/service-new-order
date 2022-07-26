@@ -21,9 +21,9 @@ export default class Database {
     return db;
   }
 
-  async query(command: string, method: Methods): Promise<RunResult | Error> {
+  async query(command: string, method: Methods): Promise<any | Error> {
     return new Promise((resolve, reject) => {
-      this.#db[method](command, (error: Error, result: RunResult) => {
+      this.#db[method](command, (error: Error, result: any) => {
         if (error) reject(error);
         else {
           resolve(result);

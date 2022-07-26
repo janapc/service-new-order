@@ -1,27 +1,20 @@
-import { CommonKafka, EachMessagePayload } from "common-kafka";
+import { ConsumerFactory } from "common-kafka";
 
-export class EmailService extends CommonKafka {
+export class EmailService {
+  #consumer: ConsumerFactory;
+
   constructor() {
-    super("EmailService");
+    this.#consumer = new ConsumerFactory("EmailService");
   }
 
   async main() {
-    const consumer = this.createConsumer(this.clientName);
     try {
-      await consumer.connect();
-      await consumer.subscribe({
-        topic: "ECOMMERCE_SEND_EMAIL",
-      });
-
-      await consumer.run({
-        autoCommitThreshold: 1,
-        eachMessage: async (messagePayload: EachMessagePayload) => {
-          this.logMessage(messagePayload);
-        },
-      });
+      this.#consumer.run(
+        "ECOMMERCE_SEND_EMAIL",
+        this.#consumer.logMessage.bind(this.#consumer)
+      );
     } catch (error) {
-      consumer.logger().error(String(error));
-      consumer.disconnect();
+      this.#consumer.shutdown();
     }
   }
 }

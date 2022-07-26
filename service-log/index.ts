@@ -1,27 +1,20 @@
-import { CommonKafka, EachMessagePayload } from "common-kafka";
+import { ConsumerFactory } from "common-kafka";
 
-class LogService extends CommonKafka {
+class LogService {
+  #consumer: ConsumerFactory;
+
   constructor() {
-    super("LogService");
+    this.#consumer = new ConsumerFactory("LogService");
   }
 
   async main() {
-    const consumer = this.createConsumer(this.clientName);
     try {
-      await consumer.connect();
-      await consumer.subscribe({
-        topics: [/ECOMMERCE.*/i],
-      });
-
-      await consumer.run({
-        autoCommitThreshold: 1,
-        eachMessage: async (messagePayload: EachMessagePayload) => {
-          this.logMessage(messagePayload);
-        },
-      });
+      this.#consumer.run(
+        [/ECOMMERCE.*/i],
+        this.#consumer.logMessage.bind(this.#consumer)
+      );
     } catch (error) {
-      consumer.logger().error(String(error));
-      consumer.disconnect();
+      this.#consumer.shutdown();
     }
   }
 }
