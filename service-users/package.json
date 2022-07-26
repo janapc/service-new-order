@@ -4,13 +4,14 @@
   "description": "This microservice create new users",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only index.ts"
+    "service:createUserService": "ts-node-dev --respawn --transpile-only createUserService.ts",
+    "service:BatchSendMessageService": "ts-node-dev --respawn --transpile-only BatchSendMessageService.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "2.0.0",
+    "common-kafka": "3.0.0",
     "sqlite": "^4.1.1",
     "sqlite3": "^5.0.8",
     "uuid": "^8.3.2"

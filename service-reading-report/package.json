@@ -1,7 +1,7 @@
 {
-  "name": "service-log",
+  "name": "service-reading-report",
   "version": "1.0.0",
-  "description": "This microservice log the messages",
+  "description": "This microservice generate reading report",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only index.ts"

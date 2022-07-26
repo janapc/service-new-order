@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Request, Response } from "express";
 
-import { CommonKafka, TopicMessages } from "common-kafka";
+import { ProducerFactory, Message, ProducerMessage } from "common-kafka";
 
 type Order = {
   orderId: string;
@@ -9,20 +9,20 @@ type Order = {
   amount: number;
 };
 
-interface Body {
+type Body = {
   [key: string]: any;
-}
+};
 
-export default class NewOrder extends CommonKafka {
+export default class NewOrder {
+  #producer: ProducerFactory;
+
   constructor() {
-    super("NewOrder");
+    this.#producer = new ProducerFactory("NewOrder");
   }
 
   async create(req: Request, res: Response): Promise<Response> {
-    const producer = this.createProducer();
-
     try {
-      await producer.connect();
+      await this.#producer.start();
 
       if (!this.#isOrderValid(req.body)) {
         return res
@@ -40,23 +40,27 @@ export default class NewOrder extends CommonKafka {
         email,
       };
 
-      const topicMessages: Array<TopicMessages> = [
+      const value = Message.formatter<Order>({
+        payload: order,
+        serviceName: "NewOrder",
+      });
+
+      const messages: Array<ProducerMessage> = [
         {
           topic: "ECOMMERCE_SEND_EMAIL",
           messages: [{ key: order.email, value: emailBody }],
         },
         {
           topic: "ECOMMERCE_NEW_ORDER",
-          messages: [{ key: order.email, value: JSON.stringify(order) }],
+          messages: [{ key: order.email, value }],
         },
       ];
 
-      await producer.sendBatch({ topicMessages });
+      await this.#producer.sendBatch(messages);
 
       return res.status(200).json({ message: "New order sent" });
     } catch (error) {
-      producer.logger().error(String(error));
-      producer.disconnect();
+      this.#producer.shutdown();
 
       return res.status(500).json({ error: "Internal server error" });
     }

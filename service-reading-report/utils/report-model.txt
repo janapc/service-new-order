@@ -1,0 +1,8 @@
+Monthly report
+
+List of new books:
+- clean code
+- clean architecture 
+- Domain Driven Design
+
+===================
