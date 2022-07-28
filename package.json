@@ -10,7 +10,7 @@
     "service:newOrder": "cd service-new-order && npm run start",
     "service:users": "cd service-users && npm run service:createUserService",
     "service:batch": "cd service-users && npm run service:BatchSendMessageService",
-    "service:reading": "cd service-users && npm run start",
+    "service:reading": "cd service-reading-report && npm run start",
     "service:http-ecommerce": "cd service-http-ecommerce && npm run start"
   },
   "keywords": [],
@@ -19,5 +19,6 @@
     "service-*",
     "common-kafka"
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {}
 }

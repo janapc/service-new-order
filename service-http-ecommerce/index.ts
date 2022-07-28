@@ -1,6 +1,6 @@
-import express from "express";
-import NewOrder from "./NewOrder";
-import GenerateAllReports from "./GenerateAllReports";
+import express from 'express';
+import NewOrder from './NewOrder';
+import GenerateAllReports from './GenerateAllReports';
 
 const PORT = 3000;
 
@@ -12,12 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 const newOrder = new NewOrder();
 const generateAllReports = new GenerateAllReports();
 
-app.post("/newOrder", newOrder.create.bind(newOrder));
+app.post('/newOrder', newOrder.create.bind(newOrder));
 app.get(
-  "/admin/generateReports",
-  generateAllReports.create.bind(generateAllReports)
+  '/admin/generateReports',
+  generateAllReports.create.bind(generateAllReports),
 );
 
-app.listen(PORT, () =>
-  console.log("\x1b[32m", `Server running in port ${PORT}`)
-);
+app.listen(PORT, () => console.info('\x1b[32m', `Server running in port ${PORT}`));

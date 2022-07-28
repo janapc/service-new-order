@@ -4,7 +4,7 @@ import {
   EachMessagePayload,
   Message,
   ProducerMessage,
-} from "common-kafka";
+} from 'common-kafka';
 
 type Order = {
   orderId: string;
@@ -14,19 +14,20 @@ type Order = {
 
 class FraudDetectorService {
   #consumer: ConsumerFactory;
+
   #producer: ProducerFactory;
 
   constructor() {
-    this.#consumer = new ConsumerFactory("FraudDetectorService");
-    this.#producer = new ProducerFactory("FraudDetectorService");
+    this.#consumer = new ConsumerFactory('FraudDetectorService');
+    this.#producer = new ProducerFactory('FraudDetectorService');
   }
 
   async main() {
     try {
       await this.#producer.start();
       await this.#consumer.run(
-        "ECOMMERCE_NEW_ORDER",
-        this.#processMessages.bind(this)
+        'ECOMMERCE_NEW_ORDER',
+        this.#processMessages.bind(this),
       );
     } catch (error) {
       await this.#consumer.shutdown();
@@ -35,16 +36,16 @@ class FraudDetectorService {
   }
 
   async #processMessages({ message }: EachMessagePayload): Promise<void> {
-    const order = Message.parse<Order>(String(message.value) || "");
+    const order = Message.parse<Order>(String(message.value) || '');
     const value = Message.formatter<Order>({
       payload: order.payload,
-      serviceName: "FraudDetectorService",
+      serviceName: 'FraudDetectorService',
       oldServiceName: order.correlationId.id,
     });
 
-    const topicName = this.#isFraud(order.payload.amount)
-      ? "ECOMMERCE_ORDER_REJECTED"
-      : "ECOMMERCE_ORDER_APPROVED";
+    const topicName = FraudDetectorService.#isFraud(order.payload.amount)
+      ? 'ECOMMERCE_ORDER_REJECTED'
+      : 'ECOMMERCE_ORDER_APPROVED';
 
     const messageToSend: ProducerMessage = {
       topic: topicName,
@@ -54,7 +55,7 @@ class FraudDetectorService {
     await this.#producer.send(messageToSend);
   }
 
-  #isFraud(amount: Number): boolean {
+  static #isFraud(amount: Number): boolean {
     return amount >= 4500;
   }
 }

@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
-import { ProducerFactory, ProducerMessage, Message } from "common-kafka";
+import { ProducerFactory, ProducerMessage, Message } from 'common-kafka';
 
 type Order = {
   orderId: string;
@@ -12,7 +12,7 @@ class NewOrder {
   #producer: ProducerFactory;
 
   constructor() {
-    this.#producer = new ProducerFactory("NewOrder");
+    this.#producer = new ProducerFactory('NewOrder');
   }
 
   async main() {
@@ -22,8 +22,7 @@ class NewOrder {
       const email = `${Math.random()}@email.com`;
 
       for (let count = 0; count < 10; count++) {
-        const emailBody =
-          "Thank you for your order! We are processing your order!";
+        const emailBody = 'Thank you for your order! We are processing your order!';
         const order: Order = {
           orderId: uuidv4(),
           amount: Number(Math.random() * 5000 + 1),
@@ -32,16 +31,16 @@ class NewOrder {
 
         const value = Message.formatter<Order>({
           payload: order,
-          serviceName: "NewOrder",
+          serviceName: 'NewOrder',
         });
 
         const messages: Array<ProducerMessage> = [
           {
-            topic: "ECOMMERCE_SEND_EMAIL",
+            topic: 'ECOMMERCE_SEND_EMAIL',
             messages: [{ key: email, value: emailBody }],
           },
           {
-            topic: "ECOMMERCE_NEW_ORDER",
+            topic: 'ECOMMERCE_NEW_ORDER',
             messages: [{ key: email, value }],
           },
         ];

@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { ProducerFactory, Message, ProducerMessage } from "common-kafka";
+import { ProducerFactory, Message, ProducerMessage } from 'common-kafka';
 
 export default class GenerateAllReports {
   #producer: ProducerFactory;
 
   constructor() {
-    this.#producer = new ProducerFactory("GenerateAllReports");
+    this.#producer = new ProducerFactory('GenerateAllReports');
   }
 
   async create(req: Request, res: Response): Promise<Response> {
@@ -14,15 +14,15 @@ export default class GenerateAllReports {
       await this.#producer.start();
 
       const value = Message.formatter<string>({
-        payload: "ECOMMERCE_USER_GENERATE_READING_REPORT",
-        serviceName: "GenerateAllReports",
+        payload: 'ECOMMERCE_USER_GENERATE_READING_REPORT',
+        serviceName: 'GenerateAllReports',
       });
 
       const message: ProducerMessage = {
-        topic: "ECOMMERCE_SEND_MESSAGE_TO_ALL_USERS",
+        topic: 'ECOMMERCE_SEND_MESSAGE_TO_ALL_USERS',
         messages: [
           {
-            key: "ECOMMERCE_USER_GENERATE_READING_REPORT",
+            key: 'ECOMMERCE_USER_GENERATE_READING_REPORT',
             value,
           },
         ],
@@ -30,11 +30,11 @@ export default class GenerateAllReports {
 
       await this.#producer.send(message);
 
-      return res.status(200).json({ message: "Report requests generated" });
+      return res.status(200).json({ message: 'Report requests generated' });
     } catch (error) {
       this.#producer.shutdown();
 
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 }
