@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 type Parse<T> = {
   payload: T;
@@ -11,10 +11,10 @@ type Params<T> = {
   oldServiceName?: string;
 };
 
-export class Message {
+export default class Message {
   static formatter<T>(params: Params<T>): string {
     const correlationId = {
-      id: `${params.oldServiceName || ""} | ${
+      id: `${params.oldServiceName || ''} | ${
         params.serviceName
       } (${uuidv4()})`,
     };

@@ -1,17 +1,18 @@
-import { Kafka, Producer, TopicMessages } from "kafkajs";
-import { v4 as uuidv4 } from "uuid";
+import { Kafka, Producer, TopicMessages } from 'kafkajs';
+import { v4 as uuidv4 } from 'uuid';
 
-import { logCreator } from "./utils/logger";
+import logCreator from './utils/logger';
 
 export type ProducerMessage = {
   topic: string;
   messages: Array<{ key: string; value: string }>;
 };
 
-const KAFKA_BROKERS = ["127.0.0.1:9092", "127.0.0.1:9093", "127.0.0.1:9094"];
+const KAFKA_BROKERS = ['127.0.0.1:9092', '127.0.0.1:9093', '127.0.0.1:9094'];
 
 export class ProducerFactory {
   clientName: string;
+
   #producer: Producer;
 
   constructor(clientName: string) {

@@ -1,4 +1,6 @@
-export { EachMessagePayload } from "kafkajs";
-export * from "./Message";
-export * from "./ProducerFactory";
-export * from "./ConsumerFactory";
+import ConsumerFactory from './ConsumerFactory';
+import Message from './Message';
+
+export { ConsumerFactory, Message };
+export { EachMessagePayload } from 'kafkajs';
+export * from './ProducerFactory';

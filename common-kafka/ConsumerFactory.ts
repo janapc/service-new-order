@@ -1,12 +1,13 @@
-import { Consumer, Kafka, EachMessagePayload } from "kafkajs";
-import { v4 as uuidv4 } from "uuid";
+import { Consumer, Kafka, EachMessagePayload } from 'kafkajs';
+import { v4 as uuidv4 } from 'uuid';
 
-import { logCreator } from "./utils/logger";
+import logCreator from './utils/logger';
 
-const KAFKA_BROKERS = ["127.0.0.1:9092", "127.0.0.1:9093", "127.0.0.1:9094"];
+const KAFKA_BROKERS = ['127.0.0.1:9092', '127.0.0.1:9093', '127.0.0.1:9094'];
 
-export class ConsumerFactory {
+export default class ConsumerFactory {
   #clientName: string;
+
   #consumer: Consumer;
 
   constructor(clientName: string) {
@@ -16,12 +17,12 @@ export class ConsumerFactory {
 
   async run(
     topicName: string | Array<RegExp>,
-    processMessages: Function
+    processMessages: Function,
   ): Promise<void> {
     try {
       await this.#consumer.connect();
 
-      if (typeof topicName === "string") {
+      if (typeof topicName === 'string') {
         await this.#consumer.subscribe({
           topic: topicName,
         });
@@ -33,11 +34,10 @@ export class ConsumerFactory {
 
       await this.#consumer.run({
         autoCommitThreshold: 1,
-        eachMessage: async (messages: EachMessagePayload) =>
-          await processMessages(messages),
+        eachMessage: async (messages: EachMessagePayload) => processMessages(messages),
       });
     } catch (error) {
-      console.log("\x1b[31m", error);
+      console.error('\x1b[31m', error);
     }
   }
 
@@ -61,8 +61,8 @@ export class ConsumerFactory {
         params.message.offset
       }]/${params.message.timestamp})`,
       extra: {
-        key: String(params.message.key) || "",
-        value: String(params.message.value) || "",
+        key: String(params.message.key) || '',
+        value: String(params.message.value) || '',
       },
     };
 
