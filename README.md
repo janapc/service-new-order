@@ -18,14 +18,15 @@ that this order reaches the client.All this using the apache-Kafka to orchestrat
 
 Some of services using:
 
-| Service                | Description                                       | Consumer X Producer |
-| ---------------------- | ------------------------------------------------- | ------------------- |
-| service-email          | This microservice send a e-mail                   | true X false        |
-| service-fraud-detector | This microservice verify if the order is an fraud | true X true         |
-| service-http-ecommerce | This microservice create new order by API         | false X true        |
-| service-log            | This microservice manager all logs of services    | true X false        |
-| service-new-order      | This microservice simule new orders               | false X true        |
-| service-users          | This microservice create new users in database    | true X false        |
+| Service                | Description                                                                                  | Consumer X Producer |
+| ---------------------- | -------------------------------------------------------------------------------------------- | ------------------- |
+| service-email          | This microservice send a e-mail                                                              | true X false        |
+| service-fraud-detector | This microservice verify if the order is an fraud                                            | true X true         |
+| service-http-ecommerce | This microservice create new order by API and generate all reports                           | false X true        |
+| service-log            | This microservice manager all logs of services                                               | true X false        |
+| service-new-order      | This microservice simule new orders                                                          | false X true        |
+| service-users          | This microservice create new users in database and send message to all the users of database | true X true         |
+| service-reading-report | This microservice generate reading report                                                    | true X false        |
 
 ## 📜 Requirement
 
@@ -61,6 +62,11 @@ To run this project your need to have:
 ## run new order
 ❯ npm run service:new-order
 
+## run batch send message
+❯ npm run service:batch
+
+## run reading report
+❯ npm run service:reading
 ```
 
 ## 🚀 Technologies
@@ -70,6 +76,7 @@ To run this project your need to have:
 - apache-kafka
 - typescript
 - docker
+- sqlite
 
 <div align="center">
 
