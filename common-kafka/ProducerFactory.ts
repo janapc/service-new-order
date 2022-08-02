@@ -1,8 +1,6 @@
 import { Kafka, Producer, TopicMessages } from 'kafkajs';
 import { v4 as uuidv4 } from 'uuid';
 
-import logCreator from './utils/logger';
-
 export type ProducerMessage = {
   topic: string;
   messages: Array<{ key: string; value: string }>;
@@ -48,7 +46,6 @@ export class ProducerFactory {
     const kafka = new Kafka({
       brokers: KAFKA_BROKERS,
       clientId: `${this.clientName}-${uuidv4()}`,
-      logCreator,
     });
 
     return kafka.producer();

@@ -1,6 +1,6 @@
 {
   "name": "service-reading-report",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "This microservice generate reading report",
   "main": "index.ts",
   "scripts": {
@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "3.0.0"
+    "common-kafka": "3.0.0",
+    "common-logs": "1.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

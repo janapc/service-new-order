@@ -22,7 +22,6 @@ class NewOrder {
       const email = `${Math.random()}@email.com`;
 
       for (let count = 0; count < 10; count++) {
-        const emailBody = 'Thank you for your order! We are processing your order!';
         const order: Order = {
           orderId: uuidv4(),
           amount: Number(Math.random() * 5000 + 1),
@@ -34,18 +33,12 @@ class NewOrder {
           serviceName: 'NewOrder',
         });
 
-        const messages: Array<ProducerMessage> = [
-          {
-            topic: 'ECOMMERCE_SEND_EMAIL',
-            messages: [{ key: email, value: emailBody }],
-          },
-          {
-            topic: 'ECOMMERCE_NEW_ORDER',
-            messages: [{ key: email, value }],
-          },
-        ];
+        const messages: ProducerMessage = {
+          topic: 'ECOMMERCE_NEW_ORDER',
+          messages: [{ key: email, value }],
+        };
 
-        await this.#producer.sendBatch(messages);
+        await this.#producer.send(messages);
       }
     } catch (error) {
       this.#producer.shutdown();

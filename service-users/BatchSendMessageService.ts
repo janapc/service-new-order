@@ -5,18 +5,17 @@ import {
   ProducerFactory,
   ProducerMessage,
 } from 'common-kafka';
-
-import Database from './Database';
+import LocalDatabase from 'common-database';
 
 class BatchSendMessageService {
   #consumer: ConsumerFactory;
 
   #producer: ProducerFactory;
 
-  #database: Database;
+  #database: LocalDatabase;
 
   constructor() {
-    this.#database = new Database();
+    this.#database = new LocalDatabase('users_database');
     this.#consumer = new ConsumerFactory('BatchSendMessageService');
     this.#producer = new ProducerFactory('BatchSendMessageService');
   }

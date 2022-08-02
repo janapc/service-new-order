@@ -1,6 +1,6 @@
 {
   "name": "service-http-ecommerce",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "This microservice create new orders",
   "main": "index.ts",
   "scripts": {
@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "common-kafka": "3.0.0",
+    "common-logs": "1.0.0",
+    "common-database": "1.0.0",
     "express": "^4.18.1",
     "uuid": "^8.3.2"
   },

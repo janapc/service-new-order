@@ -1,7 +1,7 @@
 {
-  "name": "service-fraud-detector",
-  "version": "2.0.0",
-  "description": "This microservice verify if is an fraud",
+  "name": "service-email-new-order",
+  "version": "1.0.0",
+  "description": "This microservice consumer new order and assembles the email to be ",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only index.ts"
@@ -10,9 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "common-kafka": "3.0.0",
-    "common-logs": "1.0.0",
-    "common-database": "1.0.0"
+    "common-kafka": "3.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

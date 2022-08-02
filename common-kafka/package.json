@@ -1,7 +1,7 @@
 {
   "name": "common-kafka",
   "version": "3.0.0",
-  "description": "This project contain the handler of the Kafka",
+  "description": "This project contains the handler of the Kafka",
   "main": "index.ts",
   "scripts": {},
   "keywords": [],
@@ -9,8 +9,6 @@
   "license": "ISC",
   "dependencies": {
     "kafkajs": "^2.1.0",
-    "pino": "^8.1.0",
-    "pino-pretty": "^8.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

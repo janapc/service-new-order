@@ -1,23 +1,24 @@
 {
   "name": "service-new-order",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "These services process a new order",
   "main": "index.ts",
   "scripts": {
-    "service:fraudDetector": "cd service-fraud-detector && npm run start",
+    "service:fraud-detector": "cd service-fraud-detector && npm run start",
     "service:email": "cd service-email && npm run start",
     "service:log": "cd service-log && npm run start",
-    "service:newOrder": "cd service-new-order && npm run start",
-    "service:users": "cd service-users && npm run service:createUserService",
-    "service:batch": "cd service-users && npm run service:BatchSendMessageService",
-    "service:reading": "cd service-reading-report && npm run start",
+    "service:new-order": "cd service-new-order && npm run start",
+    "service:email-new-order": "cd service-email-new-order && npm run start",
+    "service:create-user": "cd service-users && npm run service:CreateUserService",
+    "service:batch-send-message": "cd service-users && npm run service:BatchSendMessageService",
+    "service:reading-report": "cd service-reading-report && npm run start",
     "service:http-ecommerce": "cd service-http-ecommerce && npm run start"
   },
   "keywords": [],
   "author": "janaina",
   "workspaces": [
     "service-*",
-    "common-kafka"
+    "common-*"
   ],
   "license": "ISC",
   "devDependencies": {}
