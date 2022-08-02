@@ -18,6 +18,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "no-console": ["error", { "allow": ["info", "error"] }],
     "import/extensions": [
       "error",
       "ignorePackages",

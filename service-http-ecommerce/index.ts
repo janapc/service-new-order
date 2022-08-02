@@ -1,10 +1,15 @@
 import express from 'express';
+
+import Logger from 'common-logs';
+
 import NewOrder from './NewOrder';
 import GenerateAllReports from './GenerateAllReports';
 
 const PORT = 3000;
 
 const app = express();
+
+const logger = new Logger();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,4 +23,4 @@ app.get(
   generateAllReports.create.bind(generateAllReports),
 );
 
-app.listen(PORT, () => console.info('\x1b[32m', `Server running in port ${PORT}`));
+app.listen(PORT, () => logger.log(`Server running in port ${PORT}`, 'info'));

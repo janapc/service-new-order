@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { ConsumerFactory, EachMessagePayload, Message } from 'common-kafka';
-
-import Database from './Database';
+import LocalDatabase from 'common-database';
+import Logger from 'common-logs';
 
 type Order = {
   orderId: string;
@@ -13,11 +13,15 @@ type Order = {
 class CreateUserService {
   #consumer: ConsumerFactory;
 
-  #database: Database;
+  #database: LocalDatabase;
+
+  #logger: Logger;
 
   constructor() {
-    this.#database = new Database();
+    this.#database = new LocalDatabase('users_database');
+    this.#database.createIfNotExists('CREATE TABLE IF NOT EXISTS Users (uuid TEXT PRIMARY KEY, email TEXT)');
     this.#consumer = new ConsumerFactory('createUserService');
+    this.#logger = new Logger();
   }
 
   async main() {
@@ -48,7 +52,7 @@ class CreateUserService {
 
     await this.#database.query(query, 'run');
 
-    console.info('\x1b[32m', `User ${uuid} and ${email} added`);
+    this.#logger.log(`User ${uuid} and ${email} added`, 'info');
   }
 }
 export default new CreateUserService().main();

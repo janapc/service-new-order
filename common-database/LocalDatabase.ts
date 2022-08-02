@@ -2,23 +2,27 @@ import sqlite3 from 'sqlite3';
 
 type Methods = 'run' | 'get' | 'all';
 
-export default class Database {
+export default class LocalDatabase {
   #db: sqlite3.Database;
 
-  constructor() {
-    this.#db = Database.#connection();
+  constructor(name: string) {
+    this.#db = LocalDatabase.#connection(name);
   }
 
-  static #connection() : sqlite3.Database {
-    const database = new sqlite3.Database('sqlite.db');
-
-    database.serialize(() => {
-      const schema = 'CREATE TABLE IF NOT EXISTS Users (uuid TEXT PRIMARY KEY, email TEXT)';
-
-      database.run(schema);
-    });
+  static #connection(name: string) : sqlite3.Database {
+    const database = new sqlite3.Database(`${name}.db`);
 
     return database;
+  }
+
+  createIfNotExists(query: string) {
+    try {
+      this.#db.serialize(() => {
+        this.#db.run(query);
+      });
+    } catch (error) {
+      this.#db.close();
+    }
   }
 
   async query(command: string, method: Methods): Promise<any | Error> {

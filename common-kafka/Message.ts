@@ -18,6 +18,7 @@ export default class Message {
         params.serviceName
       } (${uuidv4()})`,
     };
+
     return JSON.stringify({
       payload: params.payload,
       correlationId,

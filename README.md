@@ -18,15 +18,22 @@ that this order reaches the client.All this using the apache-Kafka to orchestrat
 
 Some of services using:
 
-| Service                | Description                                                                                  | Consumer X Producer |
-| ---------------------- | -------------------------------------------------------------------------------------------- | ------------------- |
-| service-email          | This microservice send a e-mail                                                              | true X false        |
-| service-fraud-detector | This microservice verify if the order is an fraud                                            | true X true         |
-| service-http-ecommerce | This microservice create new order by API and generate all reports                           | false X true        |
-| service-log            | This microservice manager all logs of services                                               | true X false        |
-| service-new-order      | This microservice simule new orders                                                          | false X true        |
-| service-users          | This microservice create new users in database and send message to all the users of database | true X true         |
-| service-reading-report | This microservice generate reading report                                                    | true X false        |
+| Service                 | Description                                                                                  | Consumer / Producer |
+| ----------------------- | -------------------------------------------------------------------------------------------- | ------------------- |
+| service-email           | This microservice send a e-mail                                                              | ✅ / ❌             |
+| service-email-new-order | This microservice consumer new order and assembles the email to be sent                      | ✅ / ✅             |
+| service-fraud-detector  | This microservice verify if the order is an fraud                                            | ✅ / ✅             |
+| service-http-ecommerce  | This microservice create new order by API and generate all reports                           | ❌ / ✅             |
+| service-log             | This microservice manager all logs of services                                               | ✅ / ❌             |
+| service-new-order       | This microservice simule new orders                                                          | ❌ / ✅             |
+| service-users           | This microservice create new users in database and send message to all the users of database | ✅ / ✅             |
+| service-reading-report  | This microservice generate reading report                                                    | ✅ / ❌             |
+
+Common between services:
+
+- common-database: This project contains the handler of the database using Sqlite.
+- common-kafka: This project contains the handler of the Kafka that can create consumers and create producer.
+- common-logs: This project contains the handler of the Logs to format the messages.
 
 ## 📜 Requirement
 
@@ -45,10 +52,13 @@ To run this project your need to have:
 ❯ docker-compose up -d
 
 ## run service of fraud detector
-❯ npm run service:fraudDetector
+❯ npm run service:fraud-detector
 
 ## run service of email
 ❯ npm run service:email
+
+## run service of email-new-order
+❯ npm run service:email-new-order
 
 ## run service of log
 ❯ npm run service:log
@@ -57,16 +67,16 @@ To run this project your need to have:
 ❯ npm run service:http-ecommerce
 
 ## run service of users
-❯ npm run service:users
+❯ npm run service:create-user
 
 ## run new order
 ❯ npm run service:new-order
 
 ## run batch send message
-❯ npm run service:batch
+❯ npm run service:batch-send-message
 
 ## run reading report
-❯ npm run service:reading
+❯ npm run service:reading-report
 ```
 
 ## 🚀 Technologies
